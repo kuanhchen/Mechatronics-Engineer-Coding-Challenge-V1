@@ -40,6 +40,7 @@ class Robot:
             self.queue.append(direction)
     
     def execute_next_command(self): # allows for execution of the queue according to a fifo basis 
+        #likely implement queue checking here
         try:
             direction = self.queue.popleft()
             self.move(direction)
@@ -71,7 +72,7 @@ class Simulator:
             self.robots[id] = robot
         else: # otherwise check if there is a robot occupying the space
             for l in range(0, len(self.robots)):
-                if robot.x == self.robots[l].x and robot.y == self.robots[l].y:
+                if (robot.x, robot.y) == self.robots[l].get_position():
                     print("There is a robot already occupying this coordinate")
                 else:
                     self.robots[id] = robot
@@ -91,34 +92,33 @@ def square_controller(robot): # robot controller queuing a robot in a 1x1 square
 
 def run_simulation(simulator, timesteps): # runs the simulation for a user specified time
     for t in range(timesteps):
-        for robot in simulator.list_robots():
-            robot.execute_next_command() 
+        if simulator.list_robots() == []: # catch case for no robots in the simulation
+            print("No robots to move")
+        else:   
+            for robot in simulator.list_robots():
+                robot.execute_next_command() 
 
 
-""" # Create a new simulator instance
+# Create a new simulator instance
 simulator = Simulator()
 
 # Add a new robot to the simulator
 robot0 = Robot(0, 0)
 simulator.add_robot(0, robot0)
-print(simulator.list_robots())
-robot1 = Robot(0, 0)
-simulator.add_robot(1, robot1)
+#print(simulator.list_robots())
 robot1 = Robot(1, 0)
-simulator.add_robot(0, robot1)
-print(simulator.list_robots()) """
-
-""" robot1 = Robot(1, 0)
-simulator.add_robot("robot1", robot1)
+simulator.add_robot(1, robot1)
 print(simulator.list_robots())
-simulator.delete_robot("robot0") # TODO wrong because you can move a deleted robot
+simulator.delete_robot(0) 
 print(simulator.list_robots())
 
 # Enqueue the movement commands for the robot
 square_controller(robot0)
+square_controller(robot1)
 
 # Run the simulation for 4 timesteps (one for each movement command)
 run_simulation(simulator, 4)
 
 # Check that the robot has moved in a 1x1 square pattern
-print(robot0.get_position()) """
+print(robot0.get_position())
+print(robot1.get_position())

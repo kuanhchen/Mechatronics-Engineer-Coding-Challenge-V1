@@ -4,7 +4,7 @@
 #Description: This script utlizes the unittest library from python and has a unit test for each function within the 'robot_simulation' script.
 
 import unittest
-from robot_simulation import Robot,  Simulator, square_controller
+from robot_simulation import Robot,  Simulator, square_controller, run_simulation
 from collections import deque
 
 class TestRobot(unittest.TestCase): # robot class testing
@@ -123,6 +123,25 @@ class TestSquareController(unittest.TestCase): # square controller testing
         square_controller(robot0)
         self.assertEqual(robot0.queue, deque([0, 1, 2, 3]))
         print("TEST test_square_controller PASSED!!")
+
+class TestRunSimulation(unittest.TestCase): # square controller testing 
+    def test_run_simulation(self): 
+        simulator = Simulator()
+        robot0 = Robot(0, 0)
+        simulator.add_robot(0, robot0)
+        robot1 = Robot(1, 0)
+        simulator.add_robot(1, robot1) 
+        square_controller(robot0)
+        square_controller(robot1)
+        run_simulation(simulator, 4)
+        self.assertEqual(robot0.get_position(), (0, 0))  # Check that the robot has moved in a 1x1 square pattern
+        self.assertEqual(robot1.get_position(), (1, 0))
+        square_controller(robot0)
+        square_controller(robot1)   
+        run_simulation(simulator, 3)
+        self.assertEqual(robot0.get_position(), (1, 0))  # Check that the robot has moved 3 steps
+        self.assertEqual(robot1.get_position(), (2, 0))
+        print("TEST test_run_simulation PASSED!!")
     
 
 # run the test
