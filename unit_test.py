@@ -1,7 +1,7 @@
 #Title: unit_test.py 
 #Author: Kuan Chen 
 #Date: 26/12/2022
-#Description: The other file is named 'unit_test'. This script utlizes the unittest library from python and has a unit test for each function within the 'robot_simulation' script.
+#Description: This script utlizes the unittest library from python and has a unit test for each function within the 'robot_simulation' script.
 
 import unittest
 from robot_simulation import Robot,  Simulator, square_controller
@@ -25,6 +25,7 @@ class TestRobot(unittest.TestCase): # robot class testing
         self.assertEqual(robot.get_position(), (0, 0))
         robot = Robot(-100, -100) # not allowed
         self.assertEqual(robot.get_position(), (0, 0)) 
+        print("TEST test_get_position PASSED!!")
     
     def test_enqueue_command(self): # unit test for the queuing of movement for the robot
         robot = Robot(0, 0)
@@ -40,8 +41,8 @@ class TestRobot(unittest.TestCase): # robot class testing
         self.assertEqual(robot.queue, deque([0, 1, 2, 3]))
         robot.enqueue_command(-1) # not allowed 
         self.assertEqual(robot.queue, deque([0, 1, 2, 3]))
+        print("TEST test_enqueue_command PASSED!!")
         
-    
     def test_execute_next_command(self): # unit test for the execution of movement of the robot
         robot = Robot(0, 0, [0, 1, 2, 3])
         self.assertEqual(robot.get_position(), (0, 0))
@@ -53,6 +54,7 @@ class TestRobot(unittest.TestCase): # robot class testing
         self.assertEqual(robot.get_position(), (1, 0))
         robot.execute_next_command()
         self.assertEqual(robot.get_position(), (0, 0))
+        print("TEST test_execute_next_command PASSED!!")
     
     def test_move(self): # unit test for the actual movement of the robot, including illegal movement
         robot = Robot(0, 0)
@@ -72,45 +74,55 @@ class TestRobot(unittest.TestCase): # robot class testing
         self.assertEqual(robot.get_position(), (1, 0))
         robot.move(3)
         self.assertEqual(robot.get_position(), (0, 0))
+        print("TEST test_move PASSED!!")
       
-
 
 class TestSimulator(unittest.TestCase): # simulator class testing 
     def test_add_robot(self): # unit test for the addition of robots to the simulation
         simulator = Simulator()
         robot0 = Robot(0, 0)
-        simulator.add_robot("robot0", robot0)
+        simulator.add_robot(0, robot0)
         self.assertEqual(simulator.list_robots(), [robot0])
-        robot1 = Robot(0, 0) # TODO Not allowed to occupy same grid point should be just robot0 so will need to scan robot list for coords
-        simulator.add_robot("robot1", robot1)
+        robot1 = Robot(0, 0) 
+        simulator.add_robot(1, robot1)
+        self.assertEqual(simulator.list_robots(), [robot0]) 
+        robot1 = Robot(0, 0) 
+        simulator.add_robot(0, robot1)
+        self.assertEqual(simulator.list_robots(), [robot0]) 
+        robot1 = Robot(1, 0) 
+        simulator.add_robot(1, robot1)
         self.assertEqual(simulator.list_robots(), [robot0, robot1]) 
+        print("TEST test_add_robot PASSED!!")
     
     def test_delete_robot(self): # unit test for the deletion of robots from the simulation 
         simulator = Simulator()
         robot0 = Robot(0, 0)
         robot1 = Robot(1, 1)
-        simulator.add_robot("robot0", robot0)
-        simulator.add_robot("robot1", robot1)
-        simulator.delete_robot("robot0")
+        simulator.add_robot(0, robot0)
+        simulator.add_robot(1, robot1)
+        simulator.delete_robot(0)
         self.assertEqual(simulator.list_robots(), [robot1])
-        simulator.delete_robot("robot1")
+        simulator.delete_robot(1)
         self.assertEqual(simulator.list_robots(), [])
-        simulator.delete_robot("robot0")
+        simulator.delete_robot(0)
         self.assertEqual(simulator.list_robots(), [])
+        print("TEST test_delete_robot PASSED!!")
     
     def test_list_robots(self): # unit test for the retrieval of all robot ids in the simulation
         simulator = Simulator()
         robot0 = Robot(0, 0)
         robot1 = Robot(1, 1)
-        simulator.add_robot("robot0", robot0)
-        simulator.add_robot("robot1", robot1)
+        simulator.add_robot(0, robot0)
+        simulator.add_robot(1, robot1)
         self.assertEqual(simulator.list_robots(), [robot0, robot1])
+        print("TEST test_list_robots PASSED!!")
 
 class TestSquareController(unittest.TestCase): # square controller testing 
     def test_square_controller(self): 
         robot0 = Robot(0, 0)
         square_controller(robot0)
         self.assertEqual(robot0.queue, deque([0, 1, 2, 3]))
+        print("TEST test_square_controller PASSED!!")
     
 
 # run the test

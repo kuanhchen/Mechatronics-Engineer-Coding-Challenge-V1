@@ -67,7 +67,14 @@ class Simulator:
         self.robots = {}
     
     def add_robot(self, id, robot): # allows for the addition of robots into the simulator
-        self.robots[id] = robot
+        if len(self.robots) == 0: # no robots, allow for any coordinate
+            self.robots[id] = robot
+        else: # otherwise check if there is a robot occupying the space
+            for l in range(0, len(self.robots)):
+                if robot.x == self.robots[l].x and robot.y == self.robots[l].y:
+                    print("There is a robot already occupying this coordinate")
+                else:
+                    self.robots[id] = robot
     
     def delete_robot(self, id): # allows for the deletion of robots from the simulator
         if len(self.robots) == 0:
@@ -93,8 +100,15 @@ simulator = Simulator()
 
 # Add a new robot to the simulator
 robot0 = Robot(0, 0)
-simulator.add_robot("robot0", robot0)
+simulator.add_robot(0, robot0)
+print(simulator.list_robots())
+robot1 = Robot(0, 0)
+simulator.add_robot(1, robot1)
 robot1 = Robot(1, 0)
+simulator.add_robot(0, robot1)
+print(simulator.list_robots()) """
+
+""" robot1 = Robot(1, 0)
 simulator.add_robot("robot1", robot1)
 print(simulator.list_robots())
 simulator.delete_robot("robot0") # TODO wrong because you can move a deleted robot
