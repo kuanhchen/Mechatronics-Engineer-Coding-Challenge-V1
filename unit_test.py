@@ -7,6 +7,7 @@ import unittest
 from robot_simulation import Robot,  Simulator, square_controller, run_simulation
 from collections import deque
 
+
 class TestRobot(unittest.TestCase): # robot class testing
     def test_get_position(self): # unit test for instantiation of the robot class and spawn locations
         robot = Robot(0, 0)

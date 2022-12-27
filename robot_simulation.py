@@ -84,7 +84,6 @@ class Simulator:
         return list(self.robots.values())
     
 
-
 def square_controller(robot): # robot controller queuing a robot in a 1x1 square pattern
     for i in range(0, 4):
         robot.enqueue_command(i) 
