@@ -88,7 +88,7 @@ class TestSimulator(unittest.TestCase): # simulator class testing
         self.assertEqual(simulator.list_robots(), [robot0]) 
         robot1 = Robot(0, 0) 
         simulator.add_robot(0, robot1)
-        self.assertEqual(simulator.list_robots(), [robot0]) 
+        self.assertEqual(simulator.list_robots(), [robot0])  # overwriting not allowed
         robot1 = Robot(1, 0) 
         simulator.add_robot(1, robot1)
         self.assertEqual(simulator.list_robots(), [robot0, robot1]) 
@@ -105,7 +105,7 @@ class TestSimulator(unittest.TestCase): # simulator class testing
         simulator.delete_robot(1)
         self.assertEqual(simulator.list_robots(), [])
         simulator.delete_robot(0)
-        self.assertEqual(simulator.list_robots(), [])
+        self.assertEqual(simulator.list_robots(), []) 
         print("TEST test_delete_robot PASSED!!")
     
     def test_list_robots(self): # unit test for the retrieval of all robot ids in the simulation
@@ -124,7 +124,7 @@ class TestSquareController(unittest.TestCase): # square controller testing
         self.assertEqual(robot0.queue, deque([0, 1, 2, 3]))
         print("TEST test_square_controller PASSED!!")
 
-class TestRunSimulation(unittest.TestCase): # square controller testing 
+class TestRunSimulation(unittest.TestCase): # simulation testing
     def test_run_simulation(self): 
         simulator = Simulator()
         robot0 = Robot(0, 0)

@@ -5,11 +5,8 @@
 # 'Robot' objects which can perform movement actions as well as reporting on a robot's current position. The simulator class is responsible for creating 
 #  a 'Simulation' in which robots can be added, deleted, and viewed as well as perform their movement commands.
 
-# TODO It takes each robot a non-zero period of time to travel between grid cells; during this period, assume the robot occupies both the source and
+# TODO  each grid cell may only contain one robot at a time. It takes each robot a non-zero period of time to travel between grid cells; during this period, assume the robot occupies both the source and
 # destination cell.
-# TODO It should be possible for multiple robot controllers to interact with the simulation concurrently, and for each controller to asynchronously enqueue
-# a number of movement commands, regardless of how long the motion takes, or the status of other robots in the simulation
-
     
 from collections import deque
 
@@ -17,6 +14,7 @@ NORTH = 0 # variables tying compass directions to integers
 EAST = 1 
 SOUTH = 2
 WEST = 3
+
 
 
 class Robot:
@@ -86,6 +84,7 @@ class Simulator:
     def list_robots(self): # shows the current robots in the simulation
         return list(self.robots.values())
 
+
 def square_controller(robot): # robot controller queuing a robot in a 1x1 square pattern
     for i in range(0, 4):
         robot.enqueue_command(i) 
@@ -96,6 +95,7 @@ def run_simulation(simulator, timesteps): # runs the simulation for a user speci
             print("No robots to move")
         else:   
             for robot in simulator.list_robots():
+                #catch case here for the TODO
                 robot.execute_next_command() 
 
 
@@ -108,8 +108,6 @@ simulator.add_robot(0, robot0)
 #print(simulator.list_robots())
 robot1 = Robot(1, 0)
 simulator.add_robot(1, robot1)
-print(simulator.list_robots())
-simulator.delete_robot(0) 
 print(simulator.list_robots())
 
 # Enqueue the movement commands for the robot
