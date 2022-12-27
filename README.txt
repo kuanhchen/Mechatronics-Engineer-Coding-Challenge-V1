@@ -19,8 +19,28 @@ script.
 Notes on design decisions:
 List vs. Deque for commands 
 	- As this needed to be a FIFO queue, there were two paths to take. Using a list and 'popping' form the start has a time complexity of O(n) where as 
-	using deque and using popleft has a time complexity of O(1). This may not mean alot for small amounts of queue commands, however as the queue size \
+	using deque and using popleft has a time complexity of O(1). This may not mean alot for small amounts of queue commands, however as the queue size 
 	grows this will only get worse and worse. 
+Each grid cell containing one robot at a time
+	- I couldn't find a nice way to do this. The main way I tried was to implement a check within the run_simulation function which would get the position 
+	of the robot moving and forecast its next position. I would then compare that to the current locations of all robots in the simulation and determine
+	if the move was valid or not. Something like this:
+ 	        """ curr_pos = robot_list[k].get_position()
+                print(curr_pos)
+                if robot_list[k].queue[0] == 0:
+                    fut_pos = curr_pos[1] + 1
+                elif robot_list[k].queue[0] == 1:
+                    fut_pos = curr_pos[0] + 1
+                elif robot_list[k].queue[0] == 2:
+                    fut_pos = curr_pos[1] - 1
+                elif robot_list[k].queue[0] == 3:
+                    fut_pos = curr_pos[0] - 1
+                print(fut_pos) 
+		for j in range(1, len(robot_list))
+		    if: fut_pos == robot_list[j].queue[0]
+	            	print("Sorry, a robot already occupies that space!")
+		    else:
+			robot_list[k].execute_next_command() """
 
 Given Assumptions:
 - The robots exist within a discrete, finite (NxN) grid; each grid cell may only contain one robot at a time.

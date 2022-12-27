@@ -16,7 +16,6 @@ SOUTH = 2
 WEST = 3
 
 
-
 class Robot:
     def __init__(self, x=0, y=0, queue=None): # creates an instantiation of the robot class, spawns at default 0, 0 unless otherwise specified 
         if x<0 or y<0: # catch case for neagtive spawn coordinates 
@@ -83,6 +82,7 @@ class Simulator:
     
     def list_robots(self): # shows the current robots in the simulation
         return list(self.robots.values())
+    
 
 
 def square_controller(robot): # robot controller queuing a robot in a 1x1 square pattern
@@ -90,33 +90,11 @@ def square_controller(robot): # robot controller queuing a robot in a 1x1 square
         robot.enqueue_command(i) 
 
 def run_simulation(simulator, timesteps): # runs the simulation for a user specified time
+    robot_list = simulator.list_robots()
     for t in range(timesteps):
-        if simulator.list_robots() == []: # catch case for no robots in the simulation
+        if robot_list == []: # catch case for no robots in the simulation
             print("No robots to move")
         else:   
-            for robot in simulator.list_robots():
+            for k in range(0, len(robot_list)):
                 #catch case here for the TODO
-                robot.execute_next_command() 
-
-
-# Create a new simulator instance
-simulator = Simulator()
-
-# Add a new robot to the simulator
-robot0 = Robot(0, 0)
-simulator.add_robot(0, robot0)
-#print(simulator.list_robots())
-robot1 = Robot(1, 0)
-simulator.add_robot(1, robot1)
-print(simulator.list_robots())
-
-# Enqueue the movement commands for the robot
-square_controller(robot0)
-square_controller(robot1)
-
-# Run the simulation for 4 timesteps (one for each movement command)
-run_simulation(simulator, 4)
-
-# Check that the robot has moved in a 1x1 square pattern
-print(robot0.get_position())
-print(robot1.get_position())
+                robot_list[k].execute_next_command() 
